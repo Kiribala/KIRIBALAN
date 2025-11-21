@@ -1,0 +1,48 @@
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Merge Results</title>
+    <style>
+      body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; margin: 2rem; }
+      .container { max-width: 1100px; margin: auto; }
+      pre { background:#f6f8fa; padding:1rem; overflow:auto; }
+      a.btn { padding:0.4rem .8rem; border:1px solid #ddd; border-radius:4px; text-decoration:none; margin-right:.5rem; }
+      table { border-collapse: collapse; width:100%; margin-top:1rem; }
+      th,td { border:1px solid #eee; padding:6px 8px; text-align:left; }
+      .small { font-size:0.9rem; color:#555; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Results for {{ base }}</h1>
+
+      <div>
+        <a class="btn" href="{{ url_for('download', kind='commits', base=base) }}">Download commits CSV</a>
+        <a class="btn" href="{{ url_for('download', kind='reveals', base=base) }}">Download reveals CSV</a>
+        <a class="btn" href="{{ url_for('download', kind='leader', base=base) }}">Download leaderboard CSV</a>
+        <a class="btn" href="{{ url_for('download', kind='results', base=base) }}">Download results TXT</a>
+      </div>
+
+      <h2>Summary</h2>
+      <div class="small">
+        <p>Participants counted: {{ result.summary.participants_counted }}</p>
+        <p>Average: {{ result.summary.average }}</p>
+        <p>Target: {{ result.summary.target }}</p>
+        <p>Winners: {% for w in result.summary.winners %} {{ w[0] }} ({{ w[1] }}) {% if not loop.last %}, {% endif %}{% endfor %}</p>
+      </div>
+
+      <h2>Results text</h2>
+      <pre>{{ result.results_txt }}</pre>
+
+      <h2>Verified reveals (CSV preview)</h2>
+      <pre>{{ result.reveals_csv[:1000] }}</pre>
+
+      <h2>Leaderboard (CSV preview)</h2>
+      <pre>{{ result.leader_csv[:1000] }}</pre>
+
+      <p><a href="{{ url_for('index') }}">Run again</a></p>
+    </div>
+  </body>
+</html>
